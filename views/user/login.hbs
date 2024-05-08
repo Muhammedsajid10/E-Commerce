@@ -1,0 +1,89 @@
+<style>
+    /* Center the form */
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    /* Form styles */
+    form {
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    a {
+        display: block;
+        text-align: right;
+        margin-bottom: 15px;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .Error {
+        color: red;
+    }
+</style>
+
+
+
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center">Login</h2>
+            <form action="/login" method="post">
+            {{#if loggErr}}
+                <p class="Error">{{loggErr}}</p>
+            {{/if}}
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" class="form-control" name="Email" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" name="Password" placeholder="Enter password">
+                    <a href="/signup">Create New Account</a>
+                    <button type="submit" class="btn btn-primary float-right mt-3">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

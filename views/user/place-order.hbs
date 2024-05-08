@@ -1,0 +1,161 @@
+<style>
+    /* Form container */
+    .container {
+        margin-top: 50px;
+    }
+
+    /* Form fields */
+    input[type="text"],
+    input[type="number"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    /* Card styling */
+    .card {
+        margin-top: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Payment method radio buttons */
+    .radio-line {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    /* Checkout button */
+    .btn-primary {
+        margin-top: 15px;
+    }
+</style>
+
+
+
+
+<section>
+    <div class="container">
+        <form id="checkout-form" action="">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Enter Delivery Details</h2>
+
+                    <div class="form-group">
+                        <label for="">Address</label>
+                        <input type="text" class="form-control" id="Address" name="Address">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="">Pincode</label>
+                        <input type="number" class="form-control" id="Pincode" name="Pincode">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Mobile</label>
+                        <input type="number" class="form-control" id="Mobile" name="Mobile">
+                        <input type="text" name="userId" value="{{user._id}}" hidden> {{! ee "user._id" ivide pass
+                        cheyyunath, ajax ile data il userId vendittan}}
+                    </div>
+
+
+                </div>
+                <div class="col-md-6 " style="margin-top: 5rem;">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Amount: {{total}}</h5>
+                            <p class="card-text">Payment method</p>
+                            <label for="" class="radio-line">
+                                <input type="radio" name="payment-method" value="COD" checked>COD
+                            </label>
+
+                            <label for="">
+                                <input type="radio" name="payment-method" value="OnlinePayment">Online payment
+                            </label>
+
+                            <button type="submit" class="btn btn-primary float-right">Checkout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+<script>
+    $(document).ready(() => {
+        $('#checkout-form').submit((e) => {
+            e.preventDefault();
+            var formData = $('#checkout-form').serialize();
+            $.ajax({
+                url: "/place-order",
+                type: "post",
+                data: formData,
+                success: (response) => {
+                    console.log(response)
+                    if (response.codStatus) {
+                        location.href = "/place-order-success"
+                    } else {
+                        razorpayPayment(response)
+                    }
+                }
+            });
+        });
+    });
+
+    function razorpayPayment(order) {
+        var options = {
+            "key": "rzp_test_atYj0FqtD6vMdk", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "ZamZam", //your business name
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {            //success anakil ith work avum;
+                
+
+                verifyPayment(response, order)   // ee function define cheyyan vere ajax use cheyyam
+            },
+            "prefill": {
+                "name": "Gaurav Kumar", //your customer's name
+                "email": "gaurav.kumar@example.com",
+                "contact": "9000090000"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+
+
+
+    function verifyPayment(payment, order) {
+        console.log(payment, 'hhhho00', order);
+        $.ajax({
+            url: '/verify-payment',
+            data: {
+                payment,
+                order
+            },
+            method: "post",
+            success: (response) => {
+                if (response.status) {
+                    location.href = "/place-order-success";
+                } else {
+                    alert('payment failed');
+                }
+            }
+        });
+    }
+
+
+</script>

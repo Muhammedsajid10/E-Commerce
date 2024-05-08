@@ -1,0 +1,66 @@
+<style>
+    /* Custom styles for the registration form */
+.container {
+    margin-top: 50px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.float-right {
+    float: right;
+}
+
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="text-center">Register</h2>
+            <form action="/admin/register" method="post"> 
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" name="name" placeholder="Enter Name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" name="email" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="Enter Password">
+                    <a href="/admin/admin-login">Already have account</a>
+                    <button type="submit" class="btn btn-primary float-right mt-3">Signup</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+<section>
+    <div class="container mt-5" id="container_id">
+        <div class="row">
+            {{#each product}}
+            <div class="col-md-3 col-sm-6 p-4">
+                <div class="card" style="width: 100%; height: 100%; border:2px solid #ebdbdb; border-radius: 30px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <img class="card-img-top" src="product-images/{{this._id}}.jpg" alt="Card image cap" style="height: 11rem;width: 100%;">
+                    <div class="card-body">
+                        <h5 class="card-title" name="name">{{this.Name}}</h5>
+                        <p class="card-text" name="price">{{this.Price}}</p>
+                        <p class="card-text">{{this.Discription}}</p>
+                        <button onclick="addToCart('{{this._id}}')" class="btn btn-primary">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    {{!-- <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-12">
+                <button id="sort-by-name" class="btn btn-primary" onclick="sortProduct('name')">Sort by name</button>
+                <button id="sort-by-price" class="btn btn-primary" onclick="sortProduct('price')">Sort by price</button>
+            </div>
+        </div>
+    </div> --}}
+</section>
+
+
+
+
+
+<script>
+
+    function addToCart(productId) {
+    $.ajax({
+        url: "/add-to-cart",
+        type: "post",
+        data: { productId: productId },
+        success: (response) => {
+            if (response.status) {
+                // Display SweetAlert for success
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Product added to cart successfully! Go to cart and order it...',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    // Optionally, you can redirect to another page after the alert is closed
+                    window.location.href = "/cart";
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!'
+                });
+            }
+        },
+        error: (error) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!'
+            });
+        }
+    });
+}
+
+
+
+
+
+
+    function sortProduct(sortBy) {
+        $.ajax({
+            url: "/sort-products",
+            type: "post",
+            dataType: "json",
+            data: { sortBy: sortBy },
+            success: (data) => {
+                // update the HTML with the sorted products
+                $('#container_id').html(data.html);
+            },
+            error: (error) => {
+                alert('The error is :', error.responseText)
+            }
+        })
+    }
+
+    
+
+</script>

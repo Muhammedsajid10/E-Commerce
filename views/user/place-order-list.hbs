@@ -1,0 +1,38 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table mt-5">
+                    <thead>
+                        <tr>
+                            
+                            <th scope="col">Date</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Pincode</th>
+                            <th scope="col">Mobile</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">status</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each order}}
+                        <tr>
+                            
+                            <td>{{this.date}}</td>
+                            <td>{{this.deliveryDetails.address}}</td>
+                            <td>{{this.deliveryDetails.pincode}}</td>
+                            <td>{{this.deliveryDetails.mobile}}</td>
+                            <td>{{this.totalAmount}}</td>
+                            <td>{{this.status}}</td>
+                            <td>
+                                <a href="/view-order-products/{{this._id}}" class="btn btn-primary">View Product</a>      {{! "/view-order-products" ee rootil ullath aa oru orderinte prdoucts kanan, athinte koode aa oru order nte id pass cheydhu, athan "this._id"}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

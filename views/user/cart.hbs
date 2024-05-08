@@ -1,0 +1,69 @@
+<section>
+    <div class="container">
+        <table class="table mt-5">
+            <thead>
+                <tr>
+                    <th scope="col">Items</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each product}}  
+                {{!-- ☝️"product" nte ullil vere oru product nd,  ee productil ullath getCartProducts functionil define cheythappol "cartItems" enn variable lek aggregate methaod use cheyth product get cheythirunnu,
+                  aa "cartItems" il "productsss" enna object undayirunnu, aa productsss nte ullil an product details ullath,
+                  aa "productsss" an below ulla each represent cheythath    --}}
+                <tr>
+                    {{!-- {{#each this.productsss}} --}}  {{!  ine ee forEach nte avisham illa, because "user.helpers"le "getcartProducts" functionile query il change veruththi, athayath "cart" enna collectionile doucumemtile "productsss" le array ne "$arrayElemAt" use cheyath purath eduth, appol ath object ayi,   athkondan ivide ee forEach venda enn parannath}}
+                    {{!  ee image tagile "this._id"  ennathine "this.product._id"  akki matti, becauae nammal already parannthan "productsss" enna array ne object akki, athine product nameil ann store cheythadh , athkondan this.product ayath  }}
+                    <td><img src="/product-images/{{this.product._id}}.jpg" alt="" style="width: 70px;height: 70px;"></td>
+                    <td>{{this.product.Name}}</td>
+                    {{!-- {{/each}} --}}
+                    <td>{{this.product.Price}}</td>
+                    <td>
+                        <button class="cart-item-count mr-3" onclick="changeQuantity('{{this._id}}','{{product._id}}','{{../user._id}}',-1)">-</button>                                 {{!  user._id  eee loopinte ullath alla athkondan ../user._id  enn kodthath}}
+                        <span id="{{this.product._id}}">   {{this.quantity}}  </span>
+                        <button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}','{{product._id}}','{{../user._id}}',1)">+</button>                                  {{! chnageQuantity enna functionil pass cheyyunna value id's an string ayi kodukkanam, athayath douplequortes inte ulli kodukkanam ""}}  {{!-- onclickil cartId and productId pass cheyyanam , productId array ayittan, ullath athine object akki mattanam, athin "user.helpers.js" ile "getCartProducts" functionil eyuthiya query mattanam    --}}
+                    </td>
+                    <td>
+                        <a href="/cart-remove-product/{{this._id}}/{{this.product._id}}" class="btn btn-danger">Remove</a>                                                              {{!  Remove button click cheyyunbol aa oru prodouct delete akanam, athin url vayi cartId and productId pass cheyyanam,athan  "this.id" and "this.product._id" }}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <hr>
+        <h3 class="float-right mr-3 mt-3">Total Rs: <span id="total">{{totalValue}}</span> </h3><br><br><br>                                                                                  {{! total enna value <span> ii ittath aa value iniyum change cheyyan und }}
+        <a href="/place-order" class="btn btn-success float-right mr-3" > <b>Place order</b> </a>
+    </div>
+</section>
+
+<script>
+    function changeQuantity(cartId,prodId,userId,count){
+        let quantity = parseInt(document.getElementById(prodId).innerHTML)
+        //console.log("*******" + userId);
+        
+        $.ajax({
+            url:"/change-product-quantity",                                                                                                                                             //enghot pokendath ennath url kodukkuka,  ee root serveril create cheyyanam    // "changeProductQuantity(req.body)"function   "/change-product-quantity" rootil call cheythirunnu, "req.body" ullath aa "data" il eyuthiya karyangal an 
+            data:{                                                                                                                                                                       // enthokke data an pass cheyyendath enn ullath "data" il kodukkuka
+                user:userId,
+                cart:cartId,                                                 
+                product:prodId,
+                count:count,
+                quantity:quantity
+            }, 
+            method:'post',
+            success:(response) => {
+                //alert(response)
+                if(response.removeProduct){
+                    alert("Product remove from cart");
+                    location.reload()                                                                           // aa page onn relode akan vendi
+                }else{
+                    document.getElementById(prodId).innerHTML = quantity+count;
+                    document.getElementById("total").innerHTML = response.total;     //quantity change cheyyumbol thenne total change avanam 
+                }
+            }
+        })
+    }
+</script>

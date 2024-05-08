@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="/css/usr-otp.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <form action="/verify-otp" method="post">
+                    <div class="form-group">
+                        <label>
+                            <p>{{error}}</p>
+                            <input type="hidden" name="name" value="{{doSignUpUser.name}}">
+                            <input type="hidden" name="email" value="{{doSignUpUser.email}}">
+                            <input type="hidden" name="password" value="{{doSignUpUser.password}}">
+                            <input type="hidden" name="otp" value="{{otp}}">
+                            Phone Number:
+                            <input type="tel" name="mobile" value="{{doSignUpUser.mobile}}" class="form-control"
+                                required>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            OTP:
+                            <input type="text" name="otp_code" class="form-control" required>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Verify OTP</button>
+
+                    {{#if message}}
+                    <div class="alert alert-success my-3" role="alert">
+                        {{message}}
+                        <a href="/signup" class="btn btn-secondary ml-3">Signup Again</a>
+                    </div>
+                    {{/if}}
+                </form>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

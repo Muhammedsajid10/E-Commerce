@@ -3,7 +3,7 @@ var router = express.Router();
 // const productHelpers = require('../.dist/helpers/product-helpers');
 const productHelpers = require('../helpers/product-helpers');
 // var userHelpers = require('../.dist/helpers/user.helpers'); 
-var userHelpers = require('../helpers/user.helpers'); 
+var userHelpers = require('../helpers/user-helpers'); 
 
 
 const verifyLogin = (req, res, next) => {  //It's a middleware, to check, the user is logged or not
